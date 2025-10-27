@@ -1,0 +1,6 @@
+# dune init proj backend
+# OCAMLPARAM: unset
+# Shared cache: enabled-except-user-rules
+# Shared cache location: /home/hardhik/.cache/dune/db
+# Workspace root: /home/hardhik/projects/astroscale/backend
+# Auto-detected concurrency: 24

@@ -1,0 +1,13 @@
+torch
+torchvision
+torchaudio
+jax
+jaxlib
+numpy
+pandas
+matplotlib
+optuna
+scikit-learn
+flower
+diffusers
+tqdm
