@@ -25,13 +25,13 @@ AstroScale predicts stellar redshift (z) using machine learning trained on 19,00
    (Port 5173)     Modern UI with visualizations
 
           HTTP/JSON
-         
+
 
    Backend         OCaml + Cohttp
    (Port 8080)     API server with CORS
 
           Process call
-         
+
 
    ML Model        Python + scikit-learn
    inference.py    Gradient Boosting
@@ -284,7 +284,3 @@ Built with  for astronomical research
 - **Gaia**: European Space Agency astrometry mission
 
 ---
-
-**Version**: 1.0.0  
-**Last Updated**: 2024  
-**Status**: Production Ready 
