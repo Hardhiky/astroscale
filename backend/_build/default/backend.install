@@ -1,0 +1,8 @@
+lib: [
+  "_build/install/default/lib/backend/META"
+  "_build/install/default/lib/backend/dune-package"
+  "_build/install/default/lib/backend/opam"
+]
+bin: [
+  "_build/install/default/bin/backend"
+]

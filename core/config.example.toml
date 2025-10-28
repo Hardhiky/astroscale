@@ -1,0 +1,222 @@
+# AstroScale Core - Example Configuration File
+# Copy this to config.toml and customize for your deployment
+
+[node]
+# Unique identifier for this node (auto-generated if not specified)
+id = "astroscale-node-1"
+
+# Human-readable name for this node
+name = "AstroScale Primary Node"
+
+# Node role: "coordinator", "worker", or "hybrid"
+role = "worker"
+
+# Geographic region (optional, for routing optimization)
+region = "us-west"
+
+# API server bind address
+bind_address = "0.0.0.0"
+
+# API server port
+port = 8081
+
+# Enable Prometheus metrics endpoint
+enable_metrics = true
+
+# Metrics endpoint port
+metrics_port = 9090
+
+[ingestion]
+# Maximum number of concurrent downloads
+concurrent_downloads = 4
+
+# Download timeout in seconds
+download_timeout_secs = 300
+
+# Number of retry attempts for failed downloads
+retry_attempts = 3
+
+# Verify checksums for downloaded data
+verify_checksums = true
+
+# Enable local caching of downloaded data
+enable_cache = true
+
+# Data source configurations
+[[ingestion.sources]]
+name = "gaia"
+endpoint = "https://gea.esac.esa.int/tap-server/tap"
+enabled = true
+rate_limit = 10.0  # requests per second
+
+[[ingestion.sources]]
+name = "sdss"
+endpoint = "https://skyserver.sdss.org/dr17/SkyServerWS"
+enabled = true
+rate_limit = 5.0
+
+[[ingestion.sources]]
+name = "apogee"
+endpoint = "https://data.sdss.org/sas/dr17/apogee"
+enabled = true
+
+[[ingestion.sources]]
+name = "hst"
+endpoint = "https://mast.stsci.edu/api/v0.1"
+enabled = false
+# auth_token = "your-token-here"
+
+[[ingestion.sources]]
+name = "jwst"
+endpoint = "https://mast.stsci.edu/api/v0.1"
+enabled = false
+# auth_token = "your-token-here"
+
+[preprocessing]
+# Batch size for processing operations
+batch_size = 1024
+
+# Enable parallel processing
+enable_parallel = true
+
+# Number of worker threads (0 = auto-detect CPU cores)
+num_threads = 0
+
+# Normalization strategy: "standard", "minmax", or "robust"
+normalization = "standard"
+
+# Strategy for handling missing values: "mean", "median", "forward", "drop"
+missing_values = "mean"
+
+# Outlier detection configuration
+[preprocessing.outlier_detection]
+enabled = true
+method = "zscore"  # Options: "zscore", "iqr", "isolation_forest"
+threshold = 3.0
+
+# Feature engineering configuration
+[preprocessing.feature_engineering]
+enabled = true
+# polynomial_degree = 2  # Uncomment to enable polynomial features
+interactions = false  # Enable interaction terms
+
+[federated]
+# Enable federated learning mode
+enabled = false
+
+# Coordinator address (required if role = "worker")
+# coordinator_address = "http://coordinator.example.com:8081"
+
+# Synchronization interval in seconds
+sync_interval_secs = 300
+
+# Aggregation strategy: "fedavg", "fedprox", "fedadam", "scaffold"
+aggregation_strategy = "fedavg"
+
+# Minimum number of nodes required for aggregation
+min_nodes = 2
+
+# Number of local training epochs before synchronization
+local_epochs = 5
+
+# Enable differential privacy
+differential_privacy = false
+
+# Privacy budget (epsilon) - lower is more private
+epsilon = 1.0
+
+[storage]
+# Base directory for data storage
+data_dir = "./data"
+
+# Cache directory for downloaded files
+cache_dir = "./cache"
+
+# Model storage directory
+model_dir = "./models"
+
+# Maximum cache size in gigabytes
+max_cache_size_gb = 10.0
+
+# Enable compression for stored data
+enable_compression = true
+
+# Compression algorithm: "zstd" (recommended) or "gzip"
+compression_algorithm = "zstd"
+
+[network]
+# Network connection timeout in seconds
+timeout_secs = 30
+
+# Maximum concurrent network connections
+max_connections = 100
+
+# Enable TLS/SSL
+enable_tls = false
+
+# TLS certificate path (required if enable_tls = true)
+# tls_cert_path = "/path/to/cert.pem"
+
+# TLS private key path (required if enable_tls = true)
+# tls_key_path = "/path/to/key.pem"
+
+[resources]
+# Maximum memory usage in GB (0 = unlimited)
+max_memory_gb = 0.0
+
+# Maximum CPU cores to use (0 = all available)
+max_cpu_cores = 0
+
+# Enable GPU acceleration (requires CUDA/ROCm)
+enable_gpu = false
+
+# GPU device IDs to use (empty = all available)
+gpu_devices = []
+
+[logging]
+# Log level: "trace", "debug", "info", "warn", "error"
+level = "info"
+
+# Log format: "text" or "json"
+format = "text"
+
+# Write logs to file
+log_to_file = false
+
+# Log file path (required if log_to_file = true)
+# log_file_path = "./logs/astroscale.log"
+
+# ==============================================================================
+# Advanced Configuration Examples
+# ==============================================================================
+
+# Example: High-throughput configuration
+# [preprocessing]
+# batch_size = 4096
+# num_threads = 16
+# enable_parallel = true
+
+# Example: Federated coordinator configuration
+# [node]
+# role = "coordinator"
+# [federated]
+# enabled = true
+# min_nodes = 3
+# aggregation_strategy = "fedavg"
+
+# Example: GPU-accelerated worker
+# [resources]
+# enable_gpu = true
+# gpu_devices = [0, 1]  # Use first two GPUs
+# max_memory_gb = 32.0
+
+# Example: Production deployment with TLS
+# [network]
+# enable_tls = true
+# tls_cert_path = "/etc/ssl/certs/astroscale.crt"
+# tls_key_path = "/etc/ssl/private/astroscale.key"
+# [logging]
+# level = "info"
+# format = "json"
+# log_to_file = true
+# log_file_path = "/var/log/astroscale/node.log"

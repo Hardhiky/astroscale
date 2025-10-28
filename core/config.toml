@@ -1,0 +1,65 @@
+[node]
+id = "3cf8b0ff-81bd-407e-a85f-d7f453ba7dea"
+name = "astroscale-node"
+role = "worker"
+bind_address = "127.0.0.1"
+port = 8081
+enable_metrics = true
+metrics_port = 9090
+
+[ingestion]
+sources = []
+concurrent_downloads = 4
+download_timeout_secs = 300
+retry_attempts = 3
+verify_checksums = true
+enable_cache = true
+
+[preprocessing]
+batch_size = 1024
+enable_parallel = true
+num_threads = 0
+normalization = "standard"
+missing_values = "mean"
+
+[preprocessing.outlier_detection]
+enabled = false
+method = "zscore"
+threshold = 3.0
+
+[preprocessing.feature_engineering]
+enabled = true
+interactions = false
+
+[federated]
+enabled = false
+sync_interval_secs = 300
+aggregation_strategy = "fedavg"
+min_nodes = 2
+local_epochs = 5
+differential_privacy = false
+epsilon = 1.0
+
+[storage]
+data_dir = "./data"
+cache_dir = "./cache"
+model_dir = "./models"
+max_cache_size_gb = 10.0
+enable_compression = true
+compression_algorithm = "zstd"
+
+[network]
+timeout_secs = 30
+max_connections = 100
+enable_tls = false
+
+[resources]
+max_memory_gb = 0.0
+max_cpu_cores = 0
+enable_gpu = false
+gpu_devices = []
+
+[logging]
+level = "info"
+format = "text"
+log_to_file = false

@@ -1,4 +1,3 @@
-# save as gen_apogee.py and run
 import numpy as np, pandas as pd
 
 N = 6000

@@ -1,4 +1,3 @@
-# save as gen_hst_meta.py and run
 import numpy as np, pandas as pd
 
 N = 2000

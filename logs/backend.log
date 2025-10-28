@@ -1,0 +1,9 @@
+Starting server on http://localhost:8080
+[OPTIONS] /predict
+[POST] /predict
+Received body: {"ra":200.12,"dec":-47.33,"teff":5800,"logg":4.3,"fe_h":0,"snr":100,"parallax":7.2}
+Executing: cd .. && ~/.virtualenvs/py3.11/bin/python inference_production.py 200.120000 -47.330000 5800.000000 4.300000 0.000000 100.000000 7.200000 2>&1
+Python: Loaded production model: gradient_boosting
+Python: Model performance: R² = 0.2953
+Python: 0.000254
+Python exit status: exit 0

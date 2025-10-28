@@ -14,7 +14,7 @@ let cors_headers =
     ]
 ;;
 
-(* Helper function to convert JSON number to float, handling both int and float *)
+
 let to_float_flexible json =
   try Yojson.Basic.Util.to_float json
   with Yojson.Basic.Util.Type_error _ ->
@@ -43,7 +43,7 @@ let predict_handler _body =
       in
       Printf.printf "Executing: %s\n%!" cmd;
       let ic = Unix.open_process_in cmd in
-      (* Read all output lines to capture both stdout and stderr *)
+      
       let rec read_lines acc =
         try
           let line = input_line ic in
@@ -53,7 +53,7 @@ let predict_handler _body =
       let all_output = read_lines [] in
       let status = Unix.close_process_in ic in
 
-      (* Print all output for debugging *)
+      
       List.iter (fun line -> Printf.printf "Python: %s\n%!" line) all_output;
       Printf.printf "Python exit status: %s\n%!"
         (match status with
@@ -61,14 +61,14 @@ let predict_handler _body =
         | Unix.WSIGNALED n -> Printf.sprintf "signal %d" n
         | Unix.WSTOPPED n -> Printf.sprintf "stopped %d" n);
 
-      (* Get the last line as the actual output (should be the z value) *)
+      
       let output =
         match List.rev all_output with
         | last :: _ -> last
         | [] -> raise (Failure "No output from Python script")
       in
 
-      (* Parse the float value from Python output *)
+      
       let z_value = float_of_string (String.trim output) in
       let resp =
         `Assoc [ ("predicted_z", `Float z_value) ]
