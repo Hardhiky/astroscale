@@ -38,19 +38,35 @@ let predict_handler _body =
 
       let cmd =
         Printf.sprintf
-          "cd .. && python3 inference.py %.6f %.6f %.6f %.6f %.6f %.6f %.6f"
+          "cd .. && ~/.virtualenvs/py3.11/bin/python inference_production.py %.6f %.6f %.6f %.6f %.6f %.6f %.6f 2>&1"
           ra dec teff logg fe_h snr parallax
       in
       Printf.printf "Executing: %s\n%!" cmd;
       let ic = Unix.open_process_in cmd in
-      let output = input_line ic in
+      (* Read all output lines to capture both stdout and stderr *)
+      let rec read_lines acc =
+        try
+          let line = input_line ic in
+          read_lines (line :: acc)
+        with End_of_file -> List.rev acc
+      in
+      let all_output = read_lines [] in
       let status = Unix.close_process_in ic in
-      Printf.printf "Python output: %s\n%!" output;
+
+      (* Print all output for debugging *)
+      List.iter (fun line -> Printf.printf "Python: %s\n%!" line) all_output;
       Printf.printf "Python exit status: %s\n%!"
         (match status with
         | Unix.WEXITED n -> Printf.sprintf "exit %d" n
         | Unix.WSIGNALED n -> Printf.sprintf "signal %d" n
         | Unix.WSTOPPED n -> Printf.sprintf "stopped %d" n);
+
+      (* Get the last line as the actual output (should be the z value) *)
+      let output =
+        match List.rev all_output with
+        | last :: _ -> last
+        | [] -> raise (Failure "No output from Python script")
+      in
 
       (* Parse the float value from Python output *)
       let z_value = float_of_string (String.trim output) in
