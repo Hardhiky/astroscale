@@ -19,7 +19,13 @@
  (name backend)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml)
+ (depends
+  ocaml
+  dune
+  lwt
+  cohttp
+  cohttp-lwt-unix
+  yojson)
  (tags
   ("add topics" "to describe" your project)))
 
